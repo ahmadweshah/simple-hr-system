@@ -1,0 +1,74 @@
+[project]
+name = "simple-hr-system"
+version = "0.1.0"
+description = "A minimal HR system backend with Django REST Framework"
+requires-python = ">=3.10"
+dependencies = [
+    "django>=5.2.0",
+    "djangorestframework>=3.14.0",
+    "django-storages>=1.14.0",
+    "boto3>=1.34.0",
+    "psycopg2-binary>=2.9.0",
+    "drf-spectacular>=0.27.0",
+    "python-decouple>=3.8",
+    "pillow>=10.0.0",
+    "django-cors-headers>=4.3.0",
+    "python-magic>=0.4.27",
+    "celery>=5.3.0",
+    "redis>=5.0.0",
+    "dj-database-url>=2.1.0",
+    "django-filter>=23.0",
+    "gunicorn>=21.2.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.4.0",
+    "pytest-django>=4.5.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.11.0",
+    "tox>=4.11.0",
+    "pre-commit>=3.5.0",
+    "ruff>=0.1.5",
+    "factory-boy>=3.3.0",
+    "requests>=2.32.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["candidates", "common", "core"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.per-file-ignores]
+"**/migrations/*" = ["E501", "F401", "F841"]
+"**/tests/*" = ["E501"]
+
+[tool.ruff.isort]
+known-first-party = ["candidates", "common", "core"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "core.settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = "--cov=. --cov-report=html --cov-report=term-missing --cov-fail-under=80"
+testpaths = ["tests"]
