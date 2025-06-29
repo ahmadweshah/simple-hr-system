@@ -125,6 +125,35 @@ The Gunicorn configuration includes:
 # Or build and run manually
 docker build -t hr-system .
 docker run -p 8000:8000 hr-system
+
+
+## Local CI/CD Testing
+
+You can test the GitHub Actions workflow locally before pushing your changes using the provided script:
+
+```bash
+chmod +x test-ci.sh
+./test-ci.sh
+
+This script will:
+
+
+Install UV package manager if not already installed
+Sync dependencies using UV
+Set up required environment variables
+Create necessary directories
+Run database migrations
+Collect static files
+Run linting with ruff
+Execute tests with coverage reports
+After running, you'll find coverage reports in:
+
+
+HTML format: htmlcov/
+XML format: coverage.xml
+Terminal output showing missing coverage
+This allows you to verify that your changes will pass all CI checks before pushing to GitHub.
+
 ```
 
 ## 🔧 Configuration
@@ -145,8 +174,8 @@ DATABASE_URL=postgresql://username:password@localhost:5432/hrdb
 # AWS S3 Configuration (optional - defaults to local storage)
 USE_S3=True
 AWS_ACCESS_KEY_ID=your-access-key
-AWS_SECRET_ACCESS_KEY=your-secret-key
-AWS_STORAGE_BUCKET_NAME=your-bucket-name
+AWS_SECRET_ACCESS_KEY=your-secret-key #This for development use, in deployment service should expose it from infra
+AWS_STORAGE_BUCKET_NAME=your-bucket-name #This for development use, in deployment service should expose it from infra
 AWS_S3_REGION_NAME=us-east-1
 
 # CORS Configuration
